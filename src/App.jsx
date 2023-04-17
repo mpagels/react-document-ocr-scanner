@@ -26,9 +26,9 @@ function App() {
 
    
     const worker = await createWorker({
-      workerPath: '../node_modules/tesseract.js/dist/worker.min.js',
-      langPath: './assets/lang-data',
-      corePath: '../node_modules/tesseract.js-core/tesseract-core.wasm.js',
+      workerPath: '/services/tesseract/worker.min.js',
+      langPath: '/assets/lang-data',
+      corePath: '/services/tesseract-js-core/tesseract-core.wasm.js',
       logger: m => {console.log(m); setLogger(m)},
     });
 
