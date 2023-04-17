@@ -64,7 +64,7 @@ function App() {
     <div className="App">
        <Modal isOpen={isCalculating} title="Extracting Text" message={logger && loggerInitialStrings.some(string => string === logger.status) ? "Prepare scanning..." : logger && logger.progress < 1 && logger.status === "recognizing text" ? `Scanning text... ${(logger.progress * 100).toFixed(0) }%` : "  "} />
     <ImageInputContainer>
-      <ImageInputTitle>Upload an Image that contains text</ImageInputTitle>
+      <ImageInputTitle>Upload an Image that contains (german) text</ImageInputTitle>
       <ButtonWrapper>
 
       <ImageInputLabel htmlFor="image-upload">
