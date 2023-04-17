@@ -10,6 +10,16 @@ React Document OCR Scanner is a React app that allows you to upload images and e
 - everything is local (on vercel) integrated -> no external call to external packages on `CDN`s
   no scanned files/images & test are stored
 
+## To-Do
+
+- [ ] refactor code
+- [ ] add i18n support
+  - [ ] add `eng` ocr support
+  - [ ] let user decide which language `OCR` should extract
+- [ ] store extracted code in `localStorage` for later use
+  - [ ] add small "extract library"
+- [ ] research: automatically (uploaded) image improvement for better `OCR`
+
 ## Technologies
 
 - React: A JavaScript library for building user interfaces
