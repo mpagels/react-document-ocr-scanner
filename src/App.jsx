@@ -42,19 +42,6 @@ function App() {
       console.log(text);
       await worker.terminate();
     })();
-
-
-
-/* 
-    Tesseract.recognize(
-      image,
-      'deu',
-      { logger: m => { console.log(m); setLogger(m) }}
-    ).then(({ data: { text } }) => {
-      setTextExtract(text);
-      setIsCalculating(false)
-    })
- */
   };
    
 
