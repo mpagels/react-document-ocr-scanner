@@ -7,6 +7,8 @@ React Document OCR Scanner is a React app that allows you to upload images and e
 - simple upload images (taken with camera, or a scan)
 - Extract (german) text from scanned documents using OCR
 - Preview scanned documents and extracted text
+- everything is local (on vercel) integrated -> no external call to external packages on `CDN`s
+  no scanned files/images & test are stored
 
 ## Technologies
 
