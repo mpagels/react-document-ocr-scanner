@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Tesseract from 'tesseract.js';
+import {createWorker} from 'tesseract.js';
 
 import styled from 'styled-components';
 import './App.css'
@@ -21,9 +21,31 @@ function App() {
     setTextExtract("")
   }
 
-  const handleExtractText = () => {
+  const handleExtractText = async () => {
     setIsCalculating(true)
 
+   
+    const worker = await createWorker({
+      workerPath: '../node_modules/tesseract.js/dist/worker.min.js',
+      langPath: './assets/lang-data',
+      corePath: '../node_modules/tesseract.js-core/tesseract-core.wasm.js',
+      logger: m => {console.log(m); setLogger(m)},
+    });
+
+    (async () => {
+      await worker.load();
+      await worker.loadLanguage('deu');
+      await worker.initialize('deu');
+      const { data: { text } } = await worker.recognize(image);
+      setTextExtract(text);
+      setIsCalculating(false)
+      console.log(text);
+      await worker.terminate();
+    })();
+
+
+
+/* 
     Tesseract.recognize(
       image,
       'deu',
@@ -32,7 +54,7 @@ function App() {
       setTextExtract(text);
       setIsCalculating(false)
     })
-
+ */
   };
    
 
@@ -40,7 +62,7 @@ function App() {
     
 
     <div className="App">
-       <Modal isOpen={isCalculating} title="Extracting Text" message={logger && loggerInitialStrings.some(string => string === logger.status) ? "Prepare scanning..." : logger && logger.progress < 1 && logger.status === "recognizing text" ? `Scanning text... ${(logger.progress * 100).toFixed(0) }` : "  "} />
+       <Modal isOpen={isCalculating} title="Extracting Text" message={logger && loggerInitialStrings.some(string => string === logger.status) ? "Prepare scanning..." : logger && logger.progress < 1 && logger.status === "recognizing text" ? `Scanning text... ${(logger.progress * 100).toFixed(0) }%` : "  "} />
     <ImageInputContainer>
       <ImageInputTitle>Upload an Image that contains text</ImageInputTitle>
       <ButtonWrapper>
