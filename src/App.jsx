@@ -1,56 +1,24 @@
 import { useState } from 'react'
-import { createWorker } from 'tesseract.js'
 
 import styled from 'styled-components'
 import './App.css'
 import Modal from './components/Modal'
+import useTesseract from './hooks/useTesseract'
 
 function App() {
-  const [isCalculating, setIsCalculating] = useState(false)
-
-  const [textExtract, setTextExtract] = useState('')
-  const [logger, setLogger] = useState(null)
-
-  const loggerInitialStrings = [
-    'loading tesseract core',
-    'initializing tesseract',
-    'loading language traineddata',
-    'loaded language traineddata',
-    'initializing api',
-    'initialized api',
-  ]
   const [image, setImage] = useState(null)
+
+  const {
+    isCalculating,
+    textExtract,
+    resetTesseractTextExtract,
+    handleExtractText,
+    loggerMessage,
+  } = useTesseract(image)
 
   function handleImageInputChange(event) {
     setImage(URL.createObjectURL(event.target.files[0]))
-    setTextExtract('')
-  }
-
-  const handleExtractText = async () => {
-    setIsCalculating(true)
-
-    const worker = await createWorker({
-      workerPath: '/services/tesseract/worker.min.js',
-      langPath: '/assets/lang-data',
-      corePath: '/services/tesseract-js-core/tesseract-core.wasm.js',
-      logger: (m) => {
-        console.log(m)
-        setLogger(m)
-      },
-    })
-
-    ;(async () => {
-      await worker.load()
-      await worker.loadLanguage('deu')
-      await worker.initialize('deu')
-      const {
-        data: { text },
-      } = await worker.recognize(image)
-      setTextExtract(text)
-      setIsCalculating(false)
-      console.log(text)
-      await worker.terminate()
-    })()
+    resetTesseractTextExtract()
   }
 
   return (
@@ -58,16 +26,7 @@ function App() {
       <Modal
         isOpen={isCalculating}
         title="Extracting Text"
-        message={
-          logger &&
-          loggerInitialStrings.some((string) => string === logger.status)
-            ? 'Prepare scanning...'
-            : logger &&
-              logger.progress < 1 &&
-              logger.status === 'recognizing text'
-            ? `Scanning text... ${(logger.progress * 100).toFixed(0)}%`
-            : '  '
-        }
+        message={loggerMessage}
       />
       <ImageInputContainer>
         <ImageInputTitle>
