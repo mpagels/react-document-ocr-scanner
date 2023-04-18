@@ -10,10 +10,16 @@ const loggerInitialStrings = [
   'initialized api',
 ]
 
-export default function useTesseract(image, selectedLanguage) {
+export default function useTesseract(image) {
   const [isCalculating, setIsCalculating] = useState(false)
   const [textExtract, setTextExtract] = useState('')
   const [logger, setLogger] = useState(null)
+
+  const [selectedLanguage, setSelectedLanguage] = useState('deu')
+
+  function handleLanguageSelect(language) {
+    setSelectedLanguage(language)
+  }
 
   function resetTesseractTextExtract() {
     setTextExtract('')
@@ -59,5 +65,7 @@ export default function useTesseract(image, selectedLanguage) {
     resetTesseractTextExtract,
     handleExtractText,
     loggerMessage,
+    selectedLanguage,
+    handleLanguageSelect,
   }
 }

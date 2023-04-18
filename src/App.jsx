@@ -7,11 +7,6 @@ import useTesseract from './hooks/useTesseract'
 
 function App() {
   const [image, setImage] = useState(null)
-  const [selectedLanguage, setSelectedLanguage] = useState('deu')
-
-  function handleLanguageSelect(language) {
-    setSelectedLanguage(language)
-  }
 
   const {
     isCalculating,
@@ -19,7 +14,9 @@ function App() {
     resetTesseractTextExtract,
     handleExtractText,
     loggerMessage,
-  } = useTesseract(image, selectedLanguage)
+    selectedLanguage,
+    handleLanguageSelect,
+  } = useTesseract(image)
 
   function handleImageInputChange(event) {
     setImage(URL.createObjectURL(event.target.files[0]))
