@@ -35,7 +35,7 @@ function App() {
       />
       <ImageInputContainer>
         <ImageInputTitle>
-          Upload an Image that contains (german) text
+          Upload an Image that contains (ger/eng) text
         </ImageInputTitle>
         <ButtonWrapper>
           <ImageInputLabel htmlFor="image-upload">
