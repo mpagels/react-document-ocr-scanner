@@ -10,7 +10,7 @@ const loggerInitialStrings = [
   'initialized api',
 ]
 
-export default function useTesseract(image) {
+export default function useTesseract(image, selectedLanguage) {
   const [isCalculating, setIsCalculating] = useState(false)
   const [textExtract, setTextExtract] = useState('')
   const [logger, setLogger] = useState(null)
@@ -41,8 +41,8 @@ export default function useTesseract(image) {
 
     ;(async () => {
       await worker.load()
-      await worker.loadLanguage('deu')
-      await worker.initialize('deu')
+      await worker.loadLanguage(selectedLanguage)
+      await worker.initialize(selectedLanguage)
       const {
         data: { text },
       } = await worker.recognize(image)

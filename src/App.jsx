@@ -7,6 +7,11 @@ import useTesseract from './hooks/useTesseract'
 
 function App() {
   const [image, setImage] = useState(null)
+  const [selectedLanguage, setSelectedLanguage] = useState('deu')
+
+  function handleLanguageSelect(language) {
+    setSelectedLanguage(language)
+  }
 
   const {
     isCalculating,
@@ -14,7 +19,7 @@ function App() {
     resetTesseractTextExtract,
     handleExtractText,
     loggerMessage,
-  } = useTesseract(image)
+  } = useTesseract(image, selectedLanguage)
 
   function handleImageInputChange(event) {
     setImage(URL.createObjectURL(event.target.files[0]))
@@ -41,12 +46,32 @@ function App() {
               onChange={handleImageInputChange}
             />
           </ImageInputLabel>
-          {image && (
-            <CalculateButton onClick={handleExtractText}>
-              Extract Text
-            </CalculateButton>
-          )}
         </ButtonWrapper>
+
+        {image && (
+          <>
+            <LanguageSwitch>
+              Which language is in the image?:
+              <LanguageButton
+                active={selectedLanguage === 'eng'}
+                onClick={() => handleLanguageSelect('eng')}
+              >
+                English
+              </LanguageButton>
+              <LanguageButton
+                active={selectedLanguage === 'deu'}
+                onClick={() => handleLanguageSelect('deu')}
+              >
+                German
+              </LanguageButton>
+            </LanguageSwitch>
+            <ButtonWrapper>
+              <CalculateButton onClick={handleExtractText}>
+                Extract Text
+              </CalculateButton>
+            </ButtonWrapper>
+          </>
+        )}
         {textExtract && <pre>{textExtract}</pre>}
         {image && <ImageInputPreview src={image} alt="User uploaded" />}
       </ImageInputContainer>
@@ -119,4 +144,26 @@ const ImageInputLabel = styled.label`
 
 const ImageInput = styled.input`
   display: none;
+`
+
+const LanguageSwitch = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+`
+
+const LanguageButton = styled.button`
+  margin: 0 8px;
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+  font-size: 18px;
+  font-weight: 700;
+  color: ${({ active }) => (active ? '#ccc' : '#333')};
+  cursor: ${({ active }) => (active ? 'default' : 'pointer')};
+
+  &:hover {
+    color: ${({ active }) => (active ? '#ccc' : '#454545')};
+  }
 `
